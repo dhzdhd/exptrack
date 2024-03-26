@@ -60,7 +60,6 @@ Future<void> initService() async {
 
 @pragma('vm:entry-point')
 Future<void> onStart(ServiceInstance service) async {
-  // Only available for flutter 3.0.0 and later
   DartPluginRegistrant.ensureInitialized();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
