@@ -18,7 +18,8 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with SingleTickerProviderStateMixin {
   Page _currentPage = Page.values[0];
 
   @override
@@ -48,6 +49,45 @@ class _HomeViewState extends State<HomeView> {
             _currentPage = Page.values[value];
           });
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return SizedBox(
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: ListView(
+                          children: <Widget>[
+                            Text(
+                              'New subscription',
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Create'),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       body: switch (_currentPage) {
         Page.expenses => Container(),
