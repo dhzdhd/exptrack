@@ -14,7 +14,19 @@ class SubscriptionsPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [Text('Hello')],
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'AWS VPS',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      Text('\$5 / mo')
+                    ],
+                  )
+                ],
               ),
             ),
           )

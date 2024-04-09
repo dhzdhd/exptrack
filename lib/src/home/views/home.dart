@@ -1,3 +1,4 @@
+import 'package:exptrack/src/home/pages/expenses.dart';
 import 'package:exptrack/src/home/pages/subscriptions.dart';
 import 'package:flutter/material.dart';
 
@@ -90,7 +91,7 @@ class _HomeViewState extends State<HomeView>
         child: const Icon(Icons.add),
       ),
       body: switch (_currentPage) {
-        Page.expenses => Container(),
+        Page.expenses => const ExpensesPage(),
         Page.subscriptions => const SubscriptionsPage(),
       },
     );
