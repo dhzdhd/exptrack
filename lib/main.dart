@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -14,11 +15,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initService();
 
-  final settingsController = SettingsController(SettingsService());
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestExactAlarmsPermission();
 
+  final settingsController = SettingsController(SettingsService());
   await settingsController.loadSettings();
 
-  runApp(MyApp(settingsController: settingsController));
+  runApp(ProviderScope(child: MyApp(settingsController: settingsController)));
 }
 
 const notificationChannelId = 'foreground';
