@@ -6,6 +6,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:notification_listener_service/notification_listener_service.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -15,19 +16,25 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initService();
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  await flutterLocalNotificationsPlugin
+  FlutterLocalNotificationsPlugin notifs = FlutterLocalNotificationsPlugin();
+  await notifs
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
-  await flutterLocalNotificationsPlugin
+  await notifs
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.requestExactAlarmsPermission();
 
   final settingsController = SettingsController(SettingsService());
   await settingsController.loadSettings();
+
+  if (!(await NotificationListenerService.isPermissionGranted())) {
+    await NotificationListenerService.requestPermission();
+  }
+  NotificationListenerService.notificationsStream.listen((event) {
+    print("Current notification: $event");
+  });
 
   runApp(ProviderScope(child: MyApp(settingsController: settingsController)));
 }
@@ -40,15 +47,15 @@ Future<void> initService() async {
 
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     notificationChannelId,
-    'MY FOREGROUND SERVICE',
+    'EXPTRACK FOREGROUND SERVICE',
     description: 'This channel is used for important notifications.',
     importance: Importance.low,
   );
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin notifs =
       FlutterLocalNotificationsPlugin();
 
-  await flutterLocalNotificationsPlugin
+  await notifs
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
@@ -56,12 +63,11 @@ Future<void> initService() async {
   await service.configure(
     iosConfiguration: IosConfiguration(),
     androidConfiguration: AndroidConfiguration(
-      // this will be executed when app is in foreground or background in separated isolate
       onStart: onStart,
       autoStart: true,
       isForegroundMode: true,
       notificationChannelId: notificationChannelId,
-      initialNotificationTitle: 'AWESOME SERVICE',
+      initialNotificationTitle: 'ExpTrack',
       initialNotificationContent: 'Initializing',
       foregroundServiceNotificationId: notificationId,
     ),
@@ -72,27 +78,24 @@ Future<void> initService() async {
 Future<void> onStart(ServiceInstance service) async {
   DartPluginRegistrant.ensureInitialized();
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin notifs =
       FlutterLocalNotificationsPlugin();
 
-  // bring to foreground
-  Timer.periodic(const Duration(seconds: 1), (timer) async {
-    if (service is AndroidServiceInstance) {
-      if (await service.isForegroundService()) {
-        flutterLocalNotificationsPlugin.show(
-          notificationId,
-          'COOL SERVICE',
-          'Awesome ${DateTime.now()}',
-          const NotificationDetails(
-            android: AndroidNotificationDetails(
-              notificationChannelId,
-              'MY FOREGROUND SERVICE',
-              icon: 'ic_bg_service_small',
-              ongoing: true,
-            ),
+  if (service is AndroidServiceInstance) {
+    if (await service.isForegroundService()) {
+      await notifs.show(
+        notificationId,
+        'ExpTrack',
+        'Your budget has been crossed!',
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            notificationChannelId,
+            'EXPTRACK FOREGROUND SERVICE',
+            icon: 'ic_bg_service_small',
+            ongoing: true,
           ),
-        );
-      }
+        ),
+      );
     }
-  });
+  }
 }
