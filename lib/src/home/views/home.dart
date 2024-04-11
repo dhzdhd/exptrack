@@ -1,8 +1,8 @@
-import 'package:exptrack/src/home/pages/expenses.dart';
-import 'package:exptrack/src/home/pages/subscriptions.dart';
+import 'package:exptrack/src/home/views/pages/expenses.dart';
+import 'package:exptrack/src/home/views/pages/subscriptions.dart';
 import 'package:flutter/material.dart';
 
-import '../../settings/settings_view.dart';
+import '../../settings/views/settings_view.dart';
 import 'package:exptrack/utils.dart';
 
 enum Page {

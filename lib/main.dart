@@ -9,8 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notification_listener_service/notification_listener_service.dart';
 
 import 'src/app.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
+import 'src/settings/controllers/settings_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +25,6 @@ void main() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.requestExactAlarmsPermission();
 
-  final settingsController = SettingsController(SettingsService());
-  await settingsController.loadSettings();
-
   if (!(await NotificationListenerService.isPermissionGranted())) {
     await NotificationListenerService.requestPermission();
   }
@@ -36,7 +32,7 @@ void main() async {
     print("Current notification: $event");
   });
 
-  runApp(ProviderScope(child: MyApp(settingsController: settingsController)));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 const notificationChannelId = 'foreground';
