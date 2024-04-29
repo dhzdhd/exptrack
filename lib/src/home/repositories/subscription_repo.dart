@@ -12,7 +12,9 @@ class SubscriptionRepository {
   Either<String, List<TransactionModel>> fetch() {
     return Either.tryCatch(() {
       final raw = _box.get('subscriptions', defaultValue: []) as List<dynamic>;
-      return raw.map((e) => TransactionModel.fromJson(e)).toList();
+      return raw
+          .map((e) => TransactionModel.fromJson(Map<String, Object?>.from(e)))
+          .toList();
     }, (o, s) => o.toString());
   }
 

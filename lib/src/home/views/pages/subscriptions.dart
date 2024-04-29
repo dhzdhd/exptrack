@@ -1,5 +1,4 @@
 import 'package:exptrack/src/home/controllers/subscription_controller.dart';
-import 'package:exptrack/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,6 +36,7 @@ class _SubscriptionsPageState extends ConsumerState<SubscriptionsPage> {
           SizedBox(
             width: double.infinity,
             child: Card(
+              margin: EdgeInsets.zero,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -57,26 +57,26 @@ class _SubscriptionsPageState extends ConsumerState<SubscriptionsPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-            child: SegmentedButton<DurationSegment>(
-              segments: DurationSegment.values
-                  .map(
-                    (e) => ButtonSegment(
-                      value: e,
-                      label: Text(e.name.capitalize()),
-                    ),
-                  )
-                  .toList(),
-              selected: <DurationSegment>{selectedSegment},
-              showSelectedIcon: false,
-              onSelectionChanged: (newSelection) => {
-                setState(() {
-                  selectedSegment = newSelection.first;
-                })
-              },
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+          //   child: SegmentedButton<DurationSegment>(
+          //     segments: DurationSegment.values
+          //         .map(
+          //           (e) => ButtonSegment(
+          //             value: e,
+          //             label: Text(e.name.capitalize()),
+          //           ),
+          //         )
+          //         .toList(),
+          //     selected: <DurationSegment>{selectedSegment},
+          //     showSelectedIcon: false,
+          //     onSelectionChanged: (newSelection) => {
+          //       setState(() {
+          //         selectedSegment = newSelection.first;
+          //       })
+          //     },
+          //   ),
+          // ),
           Expanded(
             child: ListView(
               children: subscriptions.isEmpty
@@ -89,26 +89,31 @@ class _SubscriptionsPageState extends ConsumerState<SubscriptionsPage> {
                     ]
                   : subscriptions
                       .map(
-                        (sub) => ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(
-                            sub.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(fontWeight: FontWeight.normal),
-                          ),
-                          subtitle:
-                              Text(sub.startDate.toString().split('.')[0]),
-                          trailing: Text(
-                            '${sub.currency}${sub.amount} / ${selectedSegment.name}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
+                        (sub) => Column(
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(
+                                sub.title,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(fontWeight: FontWeight.normal),
+                              ),
+                              subtitle: Text(sub.startDate
+                                  .toString()
+                                  .split(RegExp(r':\d\d\.'))[0]),
+                              trailing: Text(
+                                '${sub.currency}${sub.amount} / ${selectedSegment.name}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
                       )
                       .toList(),
