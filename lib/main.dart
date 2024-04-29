@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:exptrack/src/home/repositories/subscription_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:notification_listener_service/notification_listener_service.dart';
 
 import 'src/app.dart';
@@ -13,6 +15,9 @@ import 'src/app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initService();
+
+  await Hive.initFlutter();
+  await SubscriptionRepository.init();
 
   FlutterLocalNotificationsPlugin notifs = FlutterLocalNotificationsPlugin();
   await notifs
