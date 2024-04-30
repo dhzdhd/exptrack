@@ -65,6 +65,7 @@ Future<void> initService() async {
     androidConfiguration: AndroidConfiguration(
       onStart: onStart,
       autoStart: true,
+      autoStartOnBoot: true,
       isForegroundMode: true,
       notificationChannelId: notificationChannelId,
       initialNotificationTitle: 'ExpTrack',
@@ -86,7 +87,7 @@ Future<void> onStart(ServiceInstance service) async {
       await notifs.show(
         notificationId,
         'ExpTrack',
-        'Your budget has been crossed!',
+        'Dummy message. Please ignore.',
         const NotificationDetails(
           android: AndroidNotificationDetails(
             notificationChannelId,
