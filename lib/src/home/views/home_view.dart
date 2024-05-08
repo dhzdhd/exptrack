@@ -1,6 +1,6 @@
-import 'package:exptrack/src/home/views/pages/expenses.dart';
+import 'package:exptrack/src/home/views/pages/transactions.dart';
 import 'package:exptrack/src/home/views/pages/subscriptions.dart';
-import 'package:exptrack/src/home/widgets/expense_sheet.dart';
+import 'package:exptrack/src/home/widgets/transaction_sheet.dart';
 import 'package:exptrack/src/home/widgets/subscription_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +9,7 @@ import '../../settings/views/settings_view.dart';
 import 'package:exptrack/utils.dart';
 
 enum Page {
-  expenses,
+  transactions,
   subscriptions;
 }
 
@@ -43,7 +43,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.attach_money),
-            label: 'Expenses',
+            label: 'Transactions',
           ),
           NavigationDestination(
             icon: Icon(Icons.subscriptions),
@@ -65,7 +65,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             context: context,
             builder: (context) {
               return switch (_currentPage) {
-                Page.expenses => const ExpenseSheetWidget(),
+                Page.transactions => const TransactionSheetWidget(),
                 Page.subscriptions => const SubscriptionSheetWidget()
               };
             },
@@ -74,7 +74,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         child: const Icon(Icons.add),
       ),
       body: switch (_currentPage) {
-        Page.expenses => const ExpensesPage(),
+        Page.transactions => const TransactionsPage(),
         Page.subscriptions => const SubscriptionsPage(),
       },
     );

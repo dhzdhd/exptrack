@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:exptrack/utils.dart';
 
-enum AutomatedSegment { automated, manual }
+enum AutomatedSegment { manual, automated }
 
-class ExpenseSheetWidget extends StatefulWidget {
-  const ExpenseSheetWidget({super.key});
+class TransactionSheetWidget extends StatefulWidget {
+  const TransactionSheetWidget({super.key});
 
   @override
-  State<ExpenseSheetWidget> createState() => _ExpenseSheetWidgetState();
+  State<TransactionSheetWidget> createState() => _TransactionSheetWidgetState();
 }
 
-class _ExpenseSheetWidgetState extends State<ExpenseSheetWidget> {
+class _TransactionSheetWidgetState extends State<TransactionSheetWidget> {
   late final TextEditingController _titleController;
   late final TextEditingController _amountController;
-  AutomatedSegment selectedSegment = AutomatedSegment.automated;
+  AutomatedSegment selectedSegment = AutomatedSegment.manual;
 
   @override
   void initState() {
