@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:exptrack/utils.dart';
-import 'package:flutter/widgets.dart';
 
 enum AutomatedSegment { automated, manual }
 

@@ -49,7 +49,10 @@ class _SubscriptionsPageState extends ConsumerState<SubscriptionsPage> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         '\$$totalExpense per day',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

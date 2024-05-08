@@ -1,4 +1,6 @@
 import 'package:exptrack/src/home/views/home_view.dart';
+import 'package:exptrack/src/theme.dart';
+import 'package:exptrack/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,6 +16,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme =
+        MaterialTheme(createTextTheme(context, 'Noto Sans', 'Noto Sans'));
     final settings = ref.watch(settingsProvider);
 
     return MaterialApp(
@@ -30,8 +34,8 @@ class MyApp extends ConsumerWidget {
       ],
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
-      theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
+      theme: theme.light(),
+      darkTheme: theme.dark(),
       themeMode: settings.theme,
       onGenerateRoute: (RouteSettings routeSettings) {
         return MaterialPageRoute<void>(
