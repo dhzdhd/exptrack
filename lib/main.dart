@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:exptrack/log.dart';
 import 'package:exptrack/src/home/repositories/subscription_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -14,6 +15,7 @@ import 'src/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await initService();
 
   await Hive.initFlutter();
@@ -33,7 +35,7 @@ void main() async {
     await NotificationListenerService.requestPermission();
   }
   NotificationListenerService.notificationsStream.listen((event) {
-    print("Current notification: $event");
+    debugLogger.d("Current notification: $event");
   });
 
   runApp(const ProviderScope(child: MyApp()));
