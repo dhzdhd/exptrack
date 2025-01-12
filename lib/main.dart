@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:exptrack/log.dart';
+import 'package:exptrack/src/home/repositories/auto_expense_repo.dart';
 import 'package:exptrack/src/home/repositories/subscription_repo.dart';
+import 'package:exptrack/src/home/repositories/transaction_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
@@ -20,6 +22,8 @@ void main() async {
 
   await Hive.initFlutter();
   await SubscriptionRepository.init();
+  await TransactionRepository.init();
+  await AutoExpenseRepository.init();
 
   FlutterLocalNotificationsPlugin notifs = FlutterLocalNotificationsPlugin();
   await notifs
